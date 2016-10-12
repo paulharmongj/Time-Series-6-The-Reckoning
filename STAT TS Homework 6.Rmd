@@ -105,10 +105,12 @@ summary(model1s)$coefficients[2]
 #Pretty darn close
 
 #Permutation test
-A<- 1000 
+A<- 1000
 TstarA<-rep(12,A) 
 for (a in (1:A)){ 
-  TstarA[a]<-mblm(PropDays~shuffle(Year),data=Data1,repeated=FALSE)$coefficients[2]
+  Data1$that<-shuffle(Data1$Year)
+  model<-mblm(PropDays~that,data=Data1,repeated=FALSE)
+  TstarA[a]<-summary(model)$coefficients[2]
   } 
 ```
 
