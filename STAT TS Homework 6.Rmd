@@ -36,6 +36,11 @@ legend("topright", fill = "tomato2", expression("Average Days Below 32" *degree 
 plot(ts(Data1$PropDays), col = "skyblue", lwd = 2, main = "Proportion of Days Below Freezing", ylab = "Temp (Degrees)") 
 abline(h = mean(Data1$PropDays), col = "tomato2", lwd = 2)
 legend("topright", fill = "tomato2", expression("Average Proportion of Days Below 32" *degree~F))
+
+#should we be looking at year vs number of days below freezing?
+plot(Data1$Year,Data1$DaysBelow32,type="l",col="steelblue2",lwd=2,main="Number of Days Below Freezing per Year", xlab="Year",ylab="Number of Days")
+
+plot(Data1$Year,Data1$PropDays,type="l",col="slateblue1",lwd=2,main="Proportion of Days Below Freezing per Year",xlab="Year",ylab="Proportion of Days")
 ```
 
 2) __Estimate a linear trend model for the proportion of measured days below freezing and report the parametric (t-test) linear trend test results in a sentence. Also discuss scope of inference for this test in a sentence or two (random sampling and random assignment and their implications).__
