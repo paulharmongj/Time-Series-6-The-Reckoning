@@ -105,12 +105,20 @@ summary(model1s)$coefficients[2]
 #Pretty darn close
 
 #Permutation test
-A<- 1000
+A<-10
 TstarA<-rep(12,A) 
+there<-logical(A)
 for (a in (1:A)){ 
   Data1$that<-shuffle(Data1$Year)
-  TstarA[a]<-mblm(PropDays~that,data=Data1,repeated=FALSE)$coefficients[2]
-  } 
+  model<-mblm(PropDays~that,data=Data1,repeated=FALSE)
+  TstarA[a]<-model$coefficients[2]
+  CI<-confint(model)[2,]
+  there[a]<-(0>CI[1])&(0<CI[2])
+}
+#not sure what to do now, I'm just finding how often we reject now
+FTR<-sum(there==TRUE)
+R<-sum(there==FALSE)
+prop<-R/A
 ```
 
 6) _Use the residual error variance estimate from your linear model for the proportion responses to simulate a series with no trend (constant mean and you can leave it at 0) and normal white noise with that same variance. Use that simulation code to perform a simulation study of the Type I error rate for the parametric t-test for the slope coefficient, the test using the confidence interval from `mblm`, and your permutation test (use 500 permutations and do 250 simulations to keep the run time somewhat manageable). Report the simulation-based Type I error rates when using a 5% significance level test for the three procedures with the same sample size as the original data set._
