@@ -109,8 +109,7 @@ A<- 1000
 TstarA<-rep(12,A) 
 for (a in (1:A)){ 
   Data1$that<-shuffle(Data1$Year)
-  model<-mblm(PropDays~that,data=Data1,repeated=FALSE)
-  TstarA[a]<-summary(model)$coefficients[2]
+  TstarA[a]<-mblm(PropDays~that,data=Data1,repeated=FALSE)$coefficients[2]
   } 
 ```
 
