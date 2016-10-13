@@ -45,9 +45,9 @@ plot(Data1$Year,Data1$PropDays,type="l",col="slateblue1",lwd=2,main="Proportion 
 
 2) __Estimate a linear trend model for the proportion of measured days below freezing and report the parametric (t-test) linear trend test results in a sentence. Also discuss scope of inference for this test in a sentence or two (random sampling and random assignment and their implications).__
 
-The linear trend model for the proportion of measured days below freezing is given below. The t-test results are also given. _Holding the effect of other covariates constant, Based on the p-val..._ 
+The linear trend model for the proportion of measured days below freezing is given below. The t-test results are also given.  
 
-Testing for a linear trend in the proportion of days below freezing with a t-test yields a test statistic of -3.173 on 107 degrees of freedom, with an associated p-value of 0.00197, so we have strong evidence at the 5\% significance level that there is a linear trend in the proportion of days below freezing.
+Testing for a linear trend in the proportion of days below freezing with a t-test yields a test statistic of -3.173 on 107 degrees of freedom, with an associated p-value of 0.00197, so we have strong evidence that there is a linear trend in the proportion of days below freezing.
 
 The data refer only to the Bozeman area, and to a specific period of years measured between 1900 and 2008. We did not randomly choose the site, nor did we randomly select the time period used to observe the climate there. In fact, since this is a purely observational study we can neither make causal inference nor inferences to the population. Thus, the scope of inference for the above t-test is only for the area of Bozeman during the 108 year period specified. To use this result on future (or past) years, or for a different site, would be an unjustified extrapolation. 
 
@@ -65,13 +65,13 @@ Looking at a proportion helps to eliminate any effect that the difference in the
 
 The permutation distribution can be observed below in both the histrogram and the density curve. The red vertical line in both of these plots represents our observed result. This observed result is our test statistic, and it yields a p-value of 0.001, indicating that we have strong evidence for the linear relationship.
 
-No idea why any of this is advantageous.
+When we permute the observations, we get an idea of what the trend would look like if the order was random. Doing a permutation test, then, shows us that there is indeed some sort of time trend present in the data. 
 ```{r problem 4}
 library(mosaic)
 #Permutation test: 
 B<- 1000 
 Tstar<-matrix(NA,nrow=B) 
-
+  
 for (b in (1:B)){ 
   Tstar[b]<-lm(PropDays~shuffle(Year),data=Data1)$coefficients[2] 
   } 
