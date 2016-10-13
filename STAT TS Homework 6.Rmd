@@ -121,6 +121,9 @@ prop>=.95
 
 ```{r problem 6}
 
+
+
+
 ```
 7) _Instead of white noise errors, we might also be interested in Type I error rates when we have autocorrelation present (again with no trend in the true process). Use the results for an AR(1) process variance (derived in class) to calculate the white noise variance needed to generate a process with the same variance as you used for your previous simulation, but when $\phi$=0.3 and 0.6. In other words, $\gamm0$ of the AR(1) process needs to match the white noise variance used above and the white noise process driving the AR(1) process needs to be adjusted appropriately._
 
@@ -142,7 +145,10 @@ var(ar1sim)
 9) _The Zhang method you read about is also available in the `zyp` package but it only provides confidence intervals and I am not completely convinced by their discussion of the intervals provided without more exploration. But you can get estimates from `zyp.sen` and confidence intervals using `confint.zyp` on the results from `zyp.sen`. The `confint` function can also be applied to `mblm` results. Find and compare the two confidence intervals for the Sen-estimators for the proportion response time series. No simulation study here - just complete the analysis._
 ```{r}
 library(zyp)
-#zyp.sen()
+CI
+mod.sen <- zyp.sen(PropDays~Year,data=Data1)
+confint.zyp(mod.sen)[2,] #gives the confidence interval for the year componenent
+
 
 ```
 
