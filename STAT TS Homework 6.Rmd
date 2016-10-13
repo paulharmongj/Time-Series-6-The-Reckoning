@@ -67,7 +67,7 @@ for (b in (1:B)){
 par(mfrow=c(1,2)) 
 Tobs<-lm(PropDays~Year,data=Data1)$coefficients[2] 
 Tobs
-hist(Tstar,labels=TRUE) 
+hist(Tstar,labels=FALSE, col = "skyblue") 
 abline(v=Tobs,lwd=2,col="red") 
 plot(density(Tstar),main="Density curve of Tstar") 
 abline(v=Tobs,lwd=2,col="red")
