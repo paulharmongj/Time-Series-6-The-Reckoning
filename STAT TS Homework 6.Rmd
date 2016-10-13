@@ -27,17 +27,6 @@ countfun<-function(x) c(sum(x<32),sum(!is.na(x)))
 1) __Make nice looking and labeled time series plots of the number of days below freezing and the proportion of measured days below freezing.__ 
 
 ```{r problem 1}
-#days below freezing raw
-plot(ts(Data1$DaysBelow32), col = "green", lwd = 2, main = "Days Below Freezing", ylab = "Temp (Degrees)") 
-abline(h = mean(Data1$DaysBelow32), col = "tomato2", lwd = 2)
-legend("topright", fill = "tomato2", expression("Average Days Below 32" *degree ~ F))
-
-#days below freezing proportion
-plot(ts(Data1$PropDays), col = "skyblue", lwd = 2, main = "Proportion of Days Below Freezing", ylab = "Temp (Degrees)") 
-abline(h = mean(Data1$PropDays), col = "tomato2", lwd = 2)
-legend("topright", fill = "tomato2", expression("Average Proportion of Days Below 32" *degree~F))
-
-#should we be looking at year vs number of days below freezing?
 plot(Data1$Year,Data1$DaysBelow32,type="l",col="steelblue2",lwd=2,main="Number of Days Below Freezing per Year", xlab="Year",ylab="Number of Days")
 
 plot(Data1$Year,Data1$PropDays,type="l",col="slateblue1",lwd=2,main="Proportion of Days Below Freezing per Year",xlab="Year",ylab="Proportion of Days")
