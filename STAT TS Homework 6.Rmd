@@ -80,7 +80,7 @@ pdata(abs(Tstar),abs(Tobs),lower.tail=F)
 
 The slope coefficients for both functions are very similar to each other. It appears that using the least-squares method, we obtain a coefficient of -0.00031. Using the Theil-Sen estimator, we get a slope coefficient of -0.00032. When we compute the permutation test using the Theil-Sen coefficient, we obtain a p-value that is very small. This indicates strong evidence in favor of a linear time trend.  
 
-```{r,warning=F,message=F}
+```{r,warning=F,message=F, problem 5}
 if(!require('mblm')){install.packages('mblm')}
 library(mblm)
 model1s<-mblm(PropDays~Year,data=Data1,repeated=FALSE)
@@ -119,7 +119,9 @@ prop>=.95
   
   - _This will be computationally intensive. To avoid needing to re-run results in R-markdown, you can try the `cache=T` option for any of the permutation or simulation code chunks. Or for this section, you can just report the three error rates and comment out the code you used._
 
+```{r problem 6}
 
+```
 7) _Instead of white noise errors, we might also be interested in Type I error rates when we have autocorrelation present (again with no trend in the true process). Use the results for an AR(1) process variance (derived in class) to calculate the white noise variance needed to generate a process with the same variance as you used for your previous simulation, but when $\phi$=0.3 and 0.6. In other words, $\gamm0$ of the AR(1) process needs to match the white noise variance used above and the white noise process driving the AR(1) process needs to be adjusted appropriately._
 
   - _Show your derivation of the required white noise variances first for $\phi=0.3$ and $\phi=0.6$._ 
