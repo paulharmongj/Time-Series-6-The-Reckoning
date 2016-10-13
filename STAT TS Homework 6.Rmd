@@ -52,7 +52,7 @@ Looking at a proportion helps to eliminate any effect that the difference in the
 
 4) _Generate a permutation test for the trend with the proportion response. I performed one in the syllabus (page 6) using the `shuffle` function from the `mosaic` package. Report a plot of the permutation distribution, the test statistic you used, and a p-value. Generally randomization based tests are more robust to violations of the normality assumption as long as the distribution (shape and variability) is the same for all observations except for differences in the center or mean. Why would that be advantageous with this response?_
 
-The permutation distribution can be observed below in both the histrogram and the density curve. The red vertical line in both of these plots represents our observed result. This observed result is our test statistic, and it yields a p-value of 0.001, indicating that we have strong evidence for the linear relationship.
+The permutation distribution can be observed below in both the histrogram and the density curve. The red vertical line in both of these plots represents our observed result. This observed result is our test statistic, and it yields a p-value of 0.001, indicating that we have strong evidence for the linear time trend.
 
 When we permute the observations, we get an idea of what the trend would look like if the order was random. Doing a permutation test, then, shows us that there is indeed some sort of time trend present in the data. 
 ```{r problem 4}
