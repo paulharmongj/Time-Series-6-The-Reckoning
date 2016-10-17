@@ -149,18 +149,16 @@ prop>=.95
 
   - _Show your derivation of the required white noise variances first for $\phi=0.3$ and $\phi=0.6$._ 
     
-  - _To simulate the process we can use this value in the `arima.sim` function in something like `arima.sim(n=2000,list(ar=c(0.3)),sd=5)` where `n=2000` provides 2000 simulated observations, `model=list(ar=c(0.3))` determines that we are using an AR(1) process with parameter of of 0.3, and `sd=5` controls the SD of the normal white noise used to build the AR(1) process (this is not the variance of the AR(1) process). Check that you get about your expected results using something like:_
+  - _To simulate the process we can use this value in the `arima.sim` function in something like `arima.sim(n=2000,list(ar=c(0.3)),sd=5)` where `n=2000` provides 2000 simulated observations, `model=list(ar=c(0.3))` determines that we are using an AR(1) process with parameter of of 0.3, and `sd=5` controls the SD of the normal white noise used to build the AR(1) process_ __(this is not the variance of the AR(1) process)__. _Check that you get about your expected results using something like:_
 ```{r,warning=F,message=F}
 ar1sim<-arima.sim(n=2000,model=list(ar=c(0.6)),sd=5)
 var(ar1sim)
 ```
 
 8) _Repeat your simulation study of the parametric, permutation, and Theil-Sen linear trend test based on the CI. Report the estimated Type I error rates in the presence of AR(1) correlations with a parameter of 0.6 based on your work in the previous question for simulating the response time series. Discuss the impacts of having autocorrelation present on the various procedures._
-```{r}
+```{r }
 
 ```
-
-
 
 9) _The Zhang method you read about is also available in the `zyp` package but it only provides confidence intervals and I am not completely convinced by their discussion of the intervals provided without more exploration. But you can get estimates from `zyp.sen` and confidence intervals using `confint.zyp` on the results from `zyp.sen`. The `confint` function can also be applied to `mblm` results. Find and compare the two confidence intervals for the Sen-estimators for the proportion response time series. No simulation study here - just complete the analysis._
 ```{r}
