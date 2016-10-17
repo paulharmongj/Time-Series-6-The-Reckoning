@@ -107,8 +107,7 @@ for (a in (1:A)){
 }
 FTR<-sum(there==TRUE)
 R<-sum(there==FALSE)
-prop<-R/A
-prop>=.95
+R/A
 ```
 
 6) _Use the residual error variance estimate from your linear model for the proportion responses to simulate a series with no trend (constant mean and you can leave it at 0) and normal white noise with that same variance. Use that simulation code to perform a simulation study of the Type I error rate for the parametric t-test for the slope coefficient, the test using the confidence interval from `mblm`, and your permutation test (use 500 permutations and do 250 simulations to keep the run time somewhat manageable). Report the simulation-based Type I error rates when using a 5% significance level test for the three procedures with the same sample size as the original data set._
@@ -140,10 +139,9 @@ for (j in (1:250)){
   CI<-confint(model)[2,]
   inthere[j]<-(0>CI[1])&(0<CI[2])
 }
-FTR<-sum(there==TRUE)
-R<-sum(there==FALSE)
-prop<-R/250
-prop>=.95
+FTR<-sum(inthere==TRUE)
+R<-sum(inthere==FALSE)
+R/250
 ```
 7) _Instead of white noise errors, we might also be interested in Type I error rates when we have autocorrelation present (again with no trend in the true process). Use the results for an AR(1) process variance (derived in class) to calculate the white noise variance needed to generate a process with the same variance as you used for your previous simulation, but when $\phi$=0.3 and 0.6. In other words, $\gamm0$ of the AR(1) process needs to match the white noise variance used above and the white noise process driving the AR(1) process needs to be adjusted appropriately._
 
