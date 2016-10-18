@@ -172,9 +172,9 @@ confint.zyp(mod.sen)[2,] #gives the confidence interval for the year componenent
 ```{r}
 par(mfrow = c(1,1))
 plot(Data1$PropDays~Data1$Year, type = "l", col = "tomato2", lwd = 2)
-lines(mod.sen) #sen estimator
-lines(model1s) #mblm
-lines(mod.1) #linear model
+abline(mod.sen$coefficients[2]*Data1$Year + mod.sen$coefficients[1]) #sen estimator
+abline(model1s) #mblm
+abline(mod.1, lty = 2, col = "limegreen") #linear model
 
 ```
 
