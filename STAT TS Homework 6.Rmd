@@ -119,29 +119,38 @@ R/A
   - _This will be computationally intensive. To avoid needing to re-run results in R-markdown, you can try the `cache=T` option for any of the permutation or simulation code chunks. Or for this section, you can just report the three error rates and comment out the code you used._
 
 ```{r problem 6}
+num.sims=250
+num.perms=500
 x=seq(1,109,by=1)
-pvalue<-logical(length=250)
+happened<-logical(length=num.sims)
 w<-as.data.frame(cbind(seq(1,109,by=1),rep(12,109)))
 colnames(w)<-c("index","noise")
-for(i in 1:250) {
-w[,2]<-rnorm(109,mean=0,sd=sd(model1s$residuals))
-slope.nt<-summary(lm(index~noise,data=w))$coefficients[2,4]
-pvalue[i]<-slope.nt<.05
+coef<-rep(12,num.sims)
+inthere<-logical(length=num.sims)
+scoef<-rep(12,num.perms)
+perm.p<-rep(12,num.sims)
+for(i in 1:num.sims) {
+  w[,2]<-rnorm(109,mean=0,sd=sd(model1s$residuals))
+  model.lm<-lm(index~noise,data=w)
+  coef[i]<-model.lm$coefficients[2]
+  pvalue.nt<-summary(model.lm)$coefficients[2,4]
+  happened[i]<-pvalue.nt<.05
+  model.mblm<-mblm(index~noise,data=w,repeated=FALSE)
+  CI<-confint(model.mblm)[2,]
+  inthere[i]<-(0>CI[1])&(0<CI[2])
+  for(j in 1:num.perms) {
+    w$shuf<-shuffle(w$index)
+    scoef[j]<-lm(shuf~noise,data=w)$coefficients[2]
+  }
+  obs<-lm(index~noise,data=w)$coefficients[2]
+  perm.p[i]<-pdata(abs(scoef),abs(obs),lower.tail=FALSE)
 }
-sum(pvalue==TRUE)/250
-
-coef<-rep(12,250)
-inthere<-logical(length=250)
-for (j in (1:250)){ 
-  shuf<-shuffle(w$index)
-  model<-mblm(index~noise,data=w,repeated=FALSE)
-  coef[j]<-model$coefficients[2]
-  CI<-confint(model)[2,]
-  inthere[j]<-(0>CI[1])&(0<CI[2])
-}
-FTR<-sum(inthere==TRUE)
-R<-sum(inthere==FALSE)
-R/250
+sim.lm<-sum(happened==TRUE)/num.sims
+sim.lm
+sim.mblm<-sum(inthere==TRUE)/num.sims
+sim.mblm
+perm.result<-sum((perm.p<.05)==TRUE)/num.sims
+perm.result
 ```
 7) _Instead of white noise errors, we might also be interested in Type I error rates when we have autocorrelation present (again with no trend in the true process). Use the results for an AR(1) process variance (derived in class) to calculate the white noise variance needed to generate a process with the same variance as you used for your previous simulation, but when $\phi$=0.3 and 0.6. In other words, $\gamm0$ of the AR(1) process needs to match the white noise variance used above and the white noise process driving the AR(1) process needs to be adjusted appropriately._
 
