@@ -154,28 +154,36 @@ var(ar1sim)
 ```
 
 8) _Repeat your simulation study of the parametric, permutation, and Theil-Sen linear trend test based on the CI. Report the estimated Type I error rates in the presence of AR(1) correlations with a parameter of 0.6 based on your work in the previous question for simulating the response time series. Discuss the impacts of having autocorrelation present on the various procedures._
+
+
 ```{r }
 
 ```
 
 9) _The Zhang method you read about is also available in the `zyp` package but it only provides confidence intervals and I am not completely convinced by their discussion of the intervals provided without more exploration. But you can get estimates from `zyp.sen` and confidence intervals using `confint.zyp` on the results from `zyp.sen`. The `confint` function can also be applied to `mblm` results. Find and compare the two confidence intervals for the Sen-estimators for the proportion response time series. No simulation study here - just complete the analysis._
+
+The Zhang method is given below. We include the confidence intervals below. Both methods give intervals that _do not_ contain $0$; however, the interval coming from the Zyp package is slightly wider than the interval fro the MBLM method. In either case, it appears that the proportion of days below freezing is decreasing over time - both methods tell this story. 
+
 ```{r}
 library(zyp)
 CI
 mod.sen <- zyp.sen(PropDays~Year,data=Data1)
 confint.zyp(mod.sen)[2,] #gives the confidence interval for the year componenent
-
-
 ```
 
+
+
 10) _Make a plot of the original proportion response time series with the parametric linear, Theil-Sen, and Zhang methods/models on the same plot. You may want to use `plot(y~x,type="l")` and then add lines to the plot._
+
+The plot of the original proportion response time series is compared with the linear, Theil-Sen, and Zhang methods on the same plot below. The Zhang line is given by the orange-shaded line, the Theil-Sen is given by the green line, and the linear model is given by the blue dotted line.  The models are calculated in different ways, but in this case there are very few differences between the regression lines that are produced. 
+
 ```{r}
 par(mfrow = c(1,1))
-plot(Data1$PropDays~Data1$Year, type = "l", col = "tomato2", lwd = 2)
-abline(mod.sen$coefficients[2]*Data1$Year + mod.sen$coefficients[1]) #sen estimator
-abline(model1s) #mblm
-abline(mod.1, lty = 2, col = "limegreen") #linear model
-
+plot(Data1$PropDays~Data1$Year, type = "l", col = "tomato2", lwd = 2, main = "Comparison of Estimates", xlab= "Year", ylab = "Proportion of Days")
+abline(coef = mod.sen$coefficients, col = rgb(.9,.1,0,.2), lwd = 10)
+abline(model1s, lty = 1, col = "limegreen", lwd = 2) #mblm
+abline(mod.1, lty = 2, col = "blue2", lwd = 2) #linear model
+legend("topright", fill = c(rgb(.9,.1,0.2), "limegreen", "blue2"), legend = c("Zhang","Theil-Sen","Linear"))
 ```
 
 
