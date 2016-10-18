@@ -130,7 +130,7 @@ inthere<-logical(length=num.sims)
 scoef<-rep(12,num.perms)
 perm.p<-rep(12,num.sims)
 for(i in 1:num.sims) {
-  w[,2]<-rnorm(109,mean=0,sd=sd(model1s$residuals))
+  w[,2]<-rnorm(109,mean=0,sd=sd(lm(Data1$PropDays~Data1$Year)$residuals))
   model.lm<-lm(index~noise,data=w)
   coef[i]<-model.lm$coefficients[2]
   pvalue.nt<-summary(model.lm)$coefficients[2,4]
@@ -147,7 +147,7 @@ for(i in 1:num.sims) {
 }
 sim.lm<-sum(happened==TRUE)/num.sims
 sim.lm
-sim.mblm<-sum(inthere==TRUE)/num.sims
+sim.mblm<-sum(inthere==FALSE)/num.sims
 sim.mblm
 perm.result<-sum((perm.p<.05)==TRUE)/num.sims
 perm.result
@@ -158,7 +158,8 @@ perm.result
     
   - _To simulate the process we can use this value in the `arima.sim` function in something like `arima.sim(n=2000,list(ar=c(0.3)),sd=5)` where `n=2000` provides 2000 simulated observations, `model=list(ar=c(0.3))` determines that we are using an AR(1) process with parameter of of 0.3, and `sd=5` controls the SD of the normal white noise used to build the AR(1) process_ __(this is not the variance of the AR(1) process)__. _Check that you get about your expected results using something like:_
 ```{r,warning=F,message=F}
-ar1sim<-arima.sim(n=2000,model=list(ar=c(0.6)),sd=5)
+whatthefuck<-sd(model.lm$residuals)
+ar1sim<-arima.sim(n=2000,model=list(ar=c(0.6)),sd=whatthefuck)
 var(ar1sim) 
 ```
 
