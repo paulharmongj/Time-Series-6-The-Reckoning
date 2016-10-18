@@ -170,7 +170,12 @@ confint.zyp(mod.sen)[2,] #gives the confidence interval for the year componenent
 
 10) _Make a plot of the original proportion response time series with the parametric linear, Theil-Sen, and Zhang methods/models on the same plot. You may want to use `plot(y~x,type="l")` and then add lines to the plot._
 ```{r}
-#plot()
+par(mfrow = c(1,1))
+plot(Data1$PropDays~Data1$Year, type = "l", col = "tomato2", lwd = 2)
+lines(mod.sen) #sen estimator
+lines(model1s) #mblm
+lines(mod.1) #linear model
+
 ```
 
 
