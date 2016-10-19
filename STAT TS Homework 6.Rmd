@@ -189,7 +189,7 @@ confint.zyp(mod.sen)[2,] #gives the confidence interval for the year componenent
 
 10) _Make a plot of the original proportion response time series with the parametric linear, Theil-Sen, and Zhang methods/models on the same plot. You may want to use `plot(y~x,type="l")` and then add lines to the plot._
 
-The plot of the original proportion response time series is compared with the linear, Theil-Sen, and Zhang methods on the same plot below. The Zhang line is given by the orange-shaded line, the Theil-Sen is given by the green line, and the linear model is given by the blue dotted line.  The models are calculated in different ways, but in this case there are very few differences between the regression lines that are produced. 
+The plot of the original proportion response time series is compared with the linear, Theil-Sen, and Zhang methods on the same plot below. The Zhang line is given by the orange-shaded line, the Theil-Sen is given by the green line, and the linear model is given by the blue dotted line.  The models are calculated in different ways, but in this case the regression models are essentially the same.  
 
 ```{r}
 par(mfrow = c(1,1))
