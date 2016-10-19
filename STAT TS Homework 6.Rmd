@@ -130,18 +130,18 @@ scoef<-rep(12,num.perms)
 perm.p<-rep(12,num.sims)
 for(i in 1:num.sims) {
   w[,2]<-rnorm(109,mean=0,sd=sd(lm(Data1$PropDays~Data1$Year)$residuals))
-  model.lm<-lm(index~noise,data=w)
+  model.lm<-lm(noise~index,data=w)
   coef[i]<-model.lm$coefficients[2]
   pvalue.nt<-summary(model.lm)$coefficients[2,4]
   happened[i]<-pvalue.nt<.05
-  model.mblm<-mblm(index~noise,data=w,repeated=FALSE)
+  model.mblm<-mblm(noise~index,data=w,repeated=FALSE)
   CI<-confint(model.mblm)[2,]
   inthere[i]<-(0>CI[1])&(0<CI[2])
   for(j in 1:num.perms) {
     w$shuf<-shuffle(w$index)
-    scoef[j]<-lm(shuf~noise,data=w)$coefficients[2]
+    scoef[j]<-lm(noise~shuf,data=w)$coefficients[2]
   }
-  obs<-lm(index~noise,data=w)$coefficients[2]
+  obs<-lm(noise~index,data=w)$coefficients[2]
   perm.p[i]<-pdata(abs(scoef),abs(obs),lower.tail=FALSE)
 }
 sim.lm<-sum(happened==TRUE)/num.sims
@@ -157,21 +157,53 @@ perm.result
     
   - _To simulate the process we can use this value in the `arima.sim` function in something like `arima.sim(n=2000,list(ar=c(0.3)),sd=5)` where `n=2000` provides 2000 simulated observations, `model=list(ar=c(0.3))` determines that we are using an AR(1) process with parameter of of 0.3, and `sd=5` controls the SD of the normal white noise used to build the AR(1) process_ __(this is not the variance of the AR(1) process)__. _Check that you get about your expected results using something like:_
 ```{r,warning=F,message=F}
-ar1sim<-arima.sim(n=2000,model=list(ar=c(0.3)),sd=)
+phi<-.3
+gamma<-summary(model.lm)$sigma^2/(1-phi^2)
+ar1sim<-arima.sim(n=2000,model=list(ar=c(phi)),sd=summary(model.lm)$sigma)
 var(ar1sim) 
 
-#calculate the gamma.not value
-model.lm <- 
-
-
-
+phi<-.6
+gamma<-summary(model.lm)$sigma^2/(1-phi^2)
+ar1sim<-arima.sim(n=2000,model=list(ar=c(phi)),sd=summary(model.lm)$sigma)
+var(ar1sim) 
 ```
 
 8) _Repeat your simulation study of the parametric, permutation, and Theil-Sen linear trend test based on the CI. Report the estimated Type I error rates in the presence of AR(1) correlations with a parameter of 0.6 based on your work in the previous question for simulating the response time series. Discuss the impacts of having autocorrelation present on the various procedures._
 
 
-```{r }
-
+```{r probelm 8 cache=TRUE}
+num.sims=250
+num.perms=500
+x=seq(1,109,by=1)
+happened<-logical(length=num.sims)
+ar<-as.data.frame(cbind(seq(1,109,by=1),rep(12,109)))
+colnames(ar)<-c("index","noise")
+coef<-rep(12,num.sims)
+inthere<-logical(length=num.sims)
+scoef<-rep(12,num.perms)
+perm.p<-rep(12,num.sims)
+for(i in 1:num.sims) {
+  ar[,2]<-arima.sim(n=109,model=list(ar=c(.6)),sd=summary(model.lm)$sigma)
+  model.lm<-lm(noise~index,data=ar)
+  coef[i]<-model.lm$coefficients[2]
+  pvalue.nt<-summary(model.lm)$coefficients[2,4]
+  happened[i]<-pvalue.nt<.05
+  model.mblm<-mblm(noise~index,data=ar,repeated=FALSE)
+  CI<-confint(model.mblm)[2,]
+  inthere[i]<-(0>CI[1])&(0<CI[2])
+  for(j in 1:num.perms) {
+    ar$shuf<-shuffle(ar$index)
+    scoef[j]<-lm(noise~shuf,data=ar)$coefficients[2]
+  }
+  obs<-lm(noise~index,data=ar)$coefficients[2]
+  perm.p[i]<-pdata(abs(scoef),abs(obs),lower.tail=FALSE)
+}
+sim.lm<-sum(happened==TRUE)/num.sims
+sim.lm
+sim.mblm<-sum(inthere==FALSE)/num.sims
+sim.mblm
+perm.result<-sum((perm.p<.05)==TRUE)/num.sims
+perm.result
 ```
 
 9) _The Zhang method you read about is also available in the `zyp` package but it only provides confidence intervals and I am not completely convinced by their discussion of the intervals provided without more exploration. But you can get estimates from `zyp.sen` and confidence intervals using `confint.zyp` on the results from `zyp.sen`. The `confint` function can also be applied to `mblm` results. Find and compare the two confidence intervals for the Sen-estimators for the proportion response time series. No simulation study here - just complete the analysis._
