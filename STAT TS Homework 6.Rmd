@@ -57,7 +57,6 @@ The permutation distribution can be observed below in both the histrogram and th
 When we permute the observations, we get an idea of what the trend would look like if the order was random. Doing a permutation test, then, shows us that there is indeed some sort of time trend present in the data. 
 ```{r problem 4}
 library(mosaic)
-#Permutation test: 
 B<- 1000 
 Tstar<-matrix(NA,nrow=B) 
   
@@ -118,7 +117,7 @@ R/A
   
   - _This will be computationally intensive. To avoid needing to re-run results in R-markdown, you can try the `cache=T` option for any of the permutation or simulation code chunks. Or for this section, you can just report the three error rates and comment out the code you used._
 
-```{r problem 6}
+```{r problem 6 cache=TRUE}
 num.sims=250
 num.perms=500
 x=seq(1,109,by=1)
@@ -158,8 +157,7 @@ perm.result
     
   - _To simulate the process we can use this value in the `arima.sim` function in something like `arima.sim(n=2000,list(ar=c(0.3)),sd=5)` where `n=2000` provides 2000 simulated observations, `model=list(ar=c(0.3))` determines that we are using an AR(1) process with parameter of of 0.3, and `sd=5` controls the SD of the normal white noise used to build the AR(1) process_ __(this is not the variance of the AR(1) process)__. _Check that you get about your expected results using something like:_
 ```{r,warning=F,message=F}
-whatthefuck<-sd(model.lm$residuals)
-ar1sim<-arima.sim(n=2000,model=list(ar=c(0.6)),sd=whatthefuck)
+ar1sim<-arima.sim(n=2000,model=list(ar=c(0.3)),sd=)
 var(ar1sim) 
 ```
 
