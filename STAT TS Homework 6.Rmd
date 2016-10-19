@@ -1,17 +1,17 @@
 ---
 title: 'Homework 6: Time Series'
-author: "Paul Harmon & Justin Gomez"
+author: "Paul Harmon & Justin Gomez (we talked with Matt Pettigrew and Jacob Dym for several problems (specifically 6))"
 date: "October 18, 2016"
-output: word_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,warning=F,message=F)
 library(grDevices)
 ```
 
 __The following code will count the days in Bozeman where the minimum temperature was measured to be below 32 degrees F (0 degrees C) and the number of days where information was available in `Data1`.__
-```{r,warning=F,message=F}
+```{r,warning=F,message=F,tidy=TRUE,tidy.opts=list(width.cutoff=50)}
 Bozeman<-read.csv("https://dl.dropboxusercontent.com/u/77307195/Bozeman.csv",header=T)
 
 monthsF<-sort(unique(Bozeman$MonthRE))
@@ -26,7 +26,7 @@ countfun<-function(x) c(sum(x<32),sum(!is.na(x)))
 
 1) __Make nice looking and labeled time series plots of the number of days below freezing and the proportion of measured days below freezing.__ 
 
-```{r problem 1}
+```{r, problem 1,tidy=TRUE,tidy.opts=list(width.cutoff=50)}
 plot(Data1$Year,Data1$DaysBelow32,type="l",col="steelblue2",lwd=2,main="Number of Days Below Freezing per Year", xlab="Year",ylab="Number of Days")
 
 plot(Data1$Year,Data1$PropDays,type="l",col="slateblue1",lwd=2,main="Proportion of Days Below Freezing per Year",xlab="Year",ylab="Proportion of Days")
@@ -40,7 +40,7 @@ Testing for a linear trend in the proportion of days below freezing with a t-tes
 
 The data refer only to the Bozeman area, and to a specific period of years measured between 1900 and 2008. We did not randomly choose the site, nor did we randomly select the time period used to observe the climate there. In fact, since this is a purely observational study we can neither make causal inference nor inferences to the population. Thus, the scope of inference for the above t-test is only for the area of Bozeman during the 108 year period specified. To use this result on future (or past) years, or for a different site, would be an unjustified extrapolation. 
 
-```{r problem2}
+```{r, problem2,tidy=TRUE,tidy.opts=list(width.cutoff=50)}
 #estimates a linear time trend model
 mod.1 <- lm(PropDays~ Year, data = Data1)
 summary(mod.1)
@@ -52,10 +52,10 @@ Looking at a proportion helps to eliminate any effect that the difference in the
 
 4) _Generate a permutation test for the trend with the proportion response. I performed one in the syllabus (page 6) using the `shuffle` function from the `mosaic` package. Report a plot of the permutation distribution, the test statistic you used, and a p-value. Generally randomization based tests are more robust to violations of the normality assumption as long as the distribution (shape and variability) is the same for all observations except for differences in the center or mean. Why would that be advantageous with this response?_
 
-The permutation distribution can be observed below in both the histrogram and the density curve. The red vertical line in both of these plots represents our observed result. This observed result is our test statistic, and it yields a p-value of 0.001, indicating that we have strong evidence for the linear time trend.
+The permutation distribution can be observed below in both the histogram and the density curve. The red vertical line in both of these plots represents our observed result. This observed result is our test statistic, and it yields a p-value of 0.001, indicating that we have strong evidence for the linear time trend.
 
 When we permute the observations, we get an idea of what the trend would look like if the order was random. Doing a permutation test, then, shows us that there is indeed some sort of time trend present in the data. 
-```{r problem 4}
+```{r, problem 4, cache=TRUE, tidy=TRUE,tidy.opts=list(width.cutoff=50)}
 library(mosaic)
 B<- 1000 
 Tstar<-matrix(NA,nrow=B) 
@@ -79,7 +79,7 @@ pdata(abs(Tstar),abs(Tobs),lower.tail=F)
 
 The slope coefficients for both functions are very similar to each other. It appears that using the least-squares method, we obtain a coefficient of -0.00031. Using the Theil-Sen estimator, we get a slope coefficient of -0.00032. When we compute the permutation test using the Theil-Sen coefficient, we obtain a p-value that is very small. This indicates strong evidence in favor of a linear time trend.  
 
-```{r,warning=F,message=F, problem 5}
+```{r,problem 5,cache=TRUE,tidy=TRUE,tidy.opts=list(width.cutoff=50)}
 if(!require('mblm')){install.packages('mblm')}
 library(mblm)
 model1s<-mblm(PropDays~Year,data=Data1,repeated=FALSE)
@@ -120,7 +120,7 @@ R/A
 The error rates for the parametric t test, confidence interval check with mblm, and permutation test are given in the output below as sim.lm, sim.mblm, and perm.result, respectively.   
   
 
-```{r problem 6 cache=TRUE}
+```{r, problem 6, cache=TRUE,tidy=TRUE,tidy.opts=list(width.cutoff=50)}
 num.sims=250
 num.perms=500
 x=seq(1,109,by=1)
@@ -163,7 +163,7 @@ perm.result
 We use the formula given in class $\gamma_{0} = \frac{\sigma^{2}_{e}}{(1-\phi^{2})}$ to find the variance of the white noise process using an AR(1) structure. For $\phi = .3$, $\gamma_{0} =  0.001$, which closely matches the variance from the _arima.sim_ function.  For $\phi = 0.6$, the $\gamma_{0} = 0.002$, which again closely matches the variance from the _arima.sim_ function. 
   
   
-```{r,warning=F,message=F}
+```{r,warning=F,message=F,tidy=TRUE,tidy.opts=list(width.cutoff=50)}
 phi<-.3
 gamma<-summary(model.lm)$sigma^2/(1-phi^2)
 ar1sim<-arima.sim(n=2000,model=list(ar=c(phi)),sd=summary(model.lm)$sigma)
@@ -177,10 +177,10 @@ var(ar1sim)
 
 8) _Repeat your simulation study of the parametric, permutation, and Theil-Sen linear trend test based on the CI. Report the estimated Type I error rates in the presence of AR(1) correlations with a parameter of 0.6 based on your work in the previous question for simulating the response time series. Discuss the impacts of having autocorrelation present on the various procedures._
 
-When we repeat the simulation study, we see that the estimated Type I error rates appear to change when autcorrelation is present, as would be expected. The parametric test error rate increased, as did the permutation test error rate; however, the mblm error rate actually decreased in the presence of autocorrelation. 
+When we repeat the simulations and permutation test, we see that the estimated Type I error rates increase for the parametric t-test, the Theil-Sen linear trend based on the CI, and the permutation test. This is likely because we are adding a positive correlation in our AR(1) process. If we added a negative correlation, we would see an oscillation pattern in the process, but since we added a positive correlation, the process continuous to wander in the same direction. The direction that the process is going is typically not correct, as we see with our inflated error rates.
 
 
-```{r probelm 8 cache=TRUE}
+```{r, probelm 8, cache=TRUE,tidy=TRUE,tidy.opts=list(width.cutoff=50)}
 num.sims=250
 num.perms=500
 x=seq(1,109,by=1)
@@ -219,7 +219,7 @@ perm.result
 
 The Zhang method is given below. We include the confidence intervals below. Both methods give intervals that _do not_ contain $0$; however, the interval coming from the Zyp package is slightly wider than the interval fro the MBLM method. In either case, it appears that the proportion of days below freezing is decreasing over time - both methods tell this same story. 
 
-```{r}
+```{r, problem 9,tidy=TRUE,tidy.opts=list(width.cutoff=50)}
 library(zyp)
 CI
 mod.sen <- zyp.sen(PropDays~Year,data=Data1)
@@ -232,7 +232,7 @@ confint.zyp(mod.sen)[2,] #gives the confidence interval for the year componenent
 
 The plot of the original proportion response time series is compared with the linear, Theil-Sen, and Zhang methods on the same plot below. The Zhang line is given by the orange-shaded line, the Theil-Sen is given by the green line, and the linear model is given by the blue dotted line.  The models are calculated in different ways, but in this case the regression lines are essentially the same for all three methods.  
 
-```{r}
+```{r, problem 10,tidy=TRUE,tidy.opts=list(width.cutoff=50)}
 par(mfrow = c(1,1))
 plot(Data1$PropDays~Data1$Year, type = "l", col = "tomato2", lwd = 2, main = "Comparison of Estimates", xlab= "Year", ylab = "Proportion of Days")
 abline(coef = mod.sen$coefficients, col = rgb(.9,.1,0,.2), lwd = 10)
